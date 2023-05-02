@@ -23,15 +23,15 @@ def main():
                 execute_sql_script(cur, script_file)
                 print(f"БД {db_name} успешно заполнена")
 
-                create_suppliers_table(cur)
-                print("Таблица suppliers успешно создана")
+                #create_suppliers_table(cur)
+                #print("Таблица suppliers успешно создана")
 
-                suppliers = get_suppliers_data(json_file)
-                insert_suppliers_data(cur, suppliers)
-                print("Данные в suppliers успешно добавлены")
+                #suppliers = get_suppliers_data(json_file)
+                #insert_suppliers_data(cur, suppliers)
+                #print("Данные в suppliers успешно добавлены")
 
-                add_foreign_keys(cur, json_file)
-                print(f"FOREIGN KEY успешно добавлены")
+                #add_foreign_keys(cur, json_file)
+                #print(f"FOREIGN KEY успешно добавлены")
 
     except(Exception, psycopg2.DatabaseError) as error:
         print(error)
@@ -42,11 +42,19 @@ def main():
 
 def create_database(params, db_name) -> None:
     """Создает новую базу данных."""
-    pass
+    conn = psycopg2.connect(dbname='postgres', **params)
+    conn.autocommit = True
+    cur = conn.cursor()
+
+    cur.execute(f"DROP DATABASE {db_name}")
+    cur.execute(f"CREATE DATABASE {db_name}")
+
+    conn.close()
 
 def execute_sql_script(cur, script_file) -> None:
     """Выполняет скрипт из файла для заполнения БД данными."""
-
+    with open(script_file, 'r') as f:
+        cur.execute(f.read())
 
 
 def create_suppliers_table(cur) -> None:
