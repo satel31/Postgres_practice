@@ -101,7 +101,7 @@ def add_foreign_keys(cur, json_file) -> None:
     data = json.loads(text)
     cur.execute("""ALTER TABLE products ADD COLUMN supplier_id INT""")
     for d in range(1, len(data)+1):
-        cur.execute(f"""UPDATE products SET supplier_id= CASE WHEN product_name LIKE(product_name FROM suppliers) THEN {d} END""")
+        cur.execute(f"""UPDATE products SET supplier_id= CASE WHEN product_name IN(product_name FROM suppliers) THEN {d} END""")
     cur.execute("""ALTER TABLE products ADD CONSTRAINT fk_products_suppliers FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id)""")
 
 
