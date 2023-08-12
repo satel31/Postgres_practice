@@ -2,8 +2,6 @@ import csv
 
 import psycopg2
 
-"""Скрипт для заполнения данными таблиц в БД Postgres."""
-#Пароль не указан для безопасности =)
 PASSWORD = ''
 
 #Connection with PostgreSQL
